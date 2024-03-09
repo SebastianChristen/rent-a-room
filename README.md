@@ -81,4 +81,50 @@ db.rooms.remove({ _id: ObjectId("your_room_id") })
 ```
 db.persons.remove({ _id: ObjectId("your_person_id") })
 ```
- 
+
+
+## dynamik
+
+vollständige collection
+```
+{
+  "_id": ObjectId,
+  "beschreibung": "string",
+  "ort": {
+    "type": "Point",
+    "coordinates": [longitude, latitude]
+  },
+  "bewohner_ids":[ObjectId],
+  "zimmer": "number",
+  "fläche": "number",
+  "gebucht_von": ISODate,
+  "gebucht_bis": ISODate
+}
+```
+
+nicht gebuchter raum, ohne "bewohner_ids" und ohne "gebucht von/bis"
+```
+{
+  "_id": ObjectId,
+  "beschreibung": "string",
+  "ort": {
+    "type": "Point",
+    "coordinates": [longitude, latitude]
+  },
+  "zimmer": "number",
+  "fläche": "number",
+}
+```
+
+nicht gebuchter raum, ohne "Beschreibung"
+```
+{
+  "_id": ObjectId,
+  "ort": {
+    "type": "Point",
+    "coordinates": [longitude, latitude]
+  },
+  "zimmer": "number",
+  "fläche": "number",
+}
+```
