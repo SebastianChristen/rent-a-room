@@ -128,3 +128,24 @@ nicht gebuchter raum, ohne "Beschreibung"
   "fläche": "number",
 }
 ```
+
+## daten anzeigen
+
+etwas finden
+```
+db.rooms.findOne({ _id: ObjectId("your_room_id") })
+```
+
+alle räume anzeigen
+```
+db.rooms.find({})
+```
+
+ein
+```
+[TODO]
+```
+[TODO]
+[TODO]
+[TODO]
+[TODO]
