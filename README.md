@@ -4,14 +4,18 @@ Gibb Modul 165
 
 
 ## create db script
-use rent-a-room 
+```
+use rent-a-room
+```
 
 ## create collection
-db.createCollection("rooms") 
-
+```
+db.createCollection("rooms")
 db.createCollection("persons")
+```
 
 ## insert room documents
+```
 db.rooms.insertMany([ 
 
   { 
@@ -41,8 +45,10 @@ db.rooms.insertMany([
   // etc... etc...
   
 ]) 
+```
 
 ## insert persons documents
+``` 
 db.persons.insertMany([
 
   {
@@ -64,7 +70,7 @@ db.persons.insertMany([
    // etc... etc...
    
 ])
-
+``` 
  
 
  
