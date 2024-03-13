@@ -155,8 +155,7 @@ Realistisches Anzeigen von Daten, wie sie in etwa in der App funktionieren:
 - Gebucht von/bis vom Raum ändern
 
 [Der Besitzer ]
-- Die Raumdetails (Fläche, Zimmer, Beschreibung...) bearbeiten
-- Den Besitzer vom Raum ändern
+- Die Raumdetails (Fläche, Zimmer, Besitzer, Beschreibung...) bearbeiten
 - Den Raum löschen
 
 
