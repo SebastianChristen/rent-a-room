@@ -137,6 +137,30 @@ nicht gebuchter raum, ohne "Beschreibung"
 
 ## daten anzeigen
 
+Realistisches Anzeigen von Daten, wie sie in etwa in der App funktionieren:
+
+[Alle]
+- Alle Räume finden, egal wo
+- Sortieren/Filtern nach Ort, Fläche, Zimmeranzahl etc.
+
+[Nur jeder User für sich]
+- Den Raum anzeigen, welchen man besitz
+- Den Raum anzeigen, welchen man bewohnt
+- Sein eigenes Profil anzeigen
+- Sein eigenes Profil bearbeiten (Telefon, Email, Alter...)
+- Sein Profil löschen
+
+[Der Bucher]
+- Den Bewohner vom Raum ändern
+- Gebucht von/bis vom Raum ändern
+
+[Der Besitzer ]
+- Die Raumdetails (Fläche, Zimmer, Beschreibung...) bearbeiten
+- Den Besitzer vom Raum ändern
+- Den Raum löschen
+
+
+
 etwas finden
 ```
 db.rooms.findOne({ _id: ObjectId("your_room_id") })
