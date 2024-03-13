@@ -31,8 +31,8 @@ db.rooms.insertMany([
     "gebucht_von": ISODate,
     "gebucht_bis": ISODate
   },
- } 
   // etc... etc...
+ }
 ]) 
 ```
 
