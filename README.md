@@ -18,17 +18,20 @@ db.createCollection("persons")
 ```
 db.rooms.insertMany([ 
   { 
-    "beschreibung": "Beispielbeschreibung", 
-    "ort": {   
-      "type": "Point", 
-      "coordinates": [longitude, latitude] 
-    }, 
-    "bewohner_ids": [ObjectId()], 
-    "zimmer": 3, 
-    "fläche": 120, 
-    "gebucht_von": new ISODate("2024-03-09T00:00:00Z"), 
-    "gebucht_bis": new ISODate("2024-03-16T00:00:00Z") 
-  }, 
+   {
+    "beschreibung": "string",
+    "ort": {
+      "type": "Point",
+      "koordinaten": [longitude, latitude]
+    },
+    "bewohner_ids":[ObjectId],
+    "besitzer_id": ObjectID,
+    "zimmer": "number",
+    "fläche": "number",
+    "gebucht_von": ISODate,
+    "gebucht_bis": ISODate
+  },
+ } 
   // etc... etc...
 ]) 
 ```
@@ -92,9 +95,10 @@ vollständige collection
   "beschreibung": "string",
   "ort": {
     "type": "Point",
-    "coordinates": [longitude, latitude]
+    "koordinaten": [longitude, latitude]
   },
   "bewohner_ids":[ObjectId],
+  "besitzer_id": ObjectID,
   "zimmer": "number",
   "fläche": "number",
   "gebucht_von": ISODate,
@@ -107,9 +111,10 @@ nicht gebuchter raum, ohne "bewohner_ids" und ohne "gebucht von/bis"
 {
   "_id": ObjectId,
   "beschreibung": "string",
+  "besitzer_id": ObjectID,
   "ort": {
     "type": "Point",
-    "coordinates": [longitude, latitude]
+    "koordinaten": [longitude, latitude]
   },
   "zimmer": "number",
   "fläche": "number",
@@ -120,6 +125,7 @@ nicht gebuchter raum, ohne "Beschreibung"
 ```
 {
   "_id": ObjectId,
+  "besitzer_id": ObjectID,
   "ort": {
     "type": "Point",
     "coordinates": [longitude, latitude]
