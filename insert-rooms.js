@@ -1,4 +1,4 @@
-[
+db.rooms.insertMany([
   {
     "name": "Gemütliches Cottage",
     "beschreibung": "Ein charmantes Cottage am Seeufer",
@@ -250,5 +250,4 @@
     "gebucht_von": ISODate("2025-09-01T00:00:00Z"),
     "gebucht_bis": ISODate("2025-09-10T00:00:00Z")
   }
-  // Weitere Daten hier...
-]
+])
