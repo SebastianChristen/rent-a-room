@@ -87,19 +87,18 @@ db.persons.deleteOne({ _id: "max.mustermann@example.com” })
 ### vollständige collection 
 ```
 { 
-  "_id": ObjectId, 
-  "name": "Studio zum Arbeiten", 
-  "beschreibung": "string", 
-  "ort": { 
-    "type": "Point", 
-    "koordinaten": [longitude, latitude] 
-  }, 
-  "bewohner_ids":[ObjectId], 
-  "besitzer_id": ObjectID, 
-  "zimmer": "number", 
-  "fläche": "number", 
-  "gebucht_von": ISODate, 
-  "gebucht_bis": ISODate 
+  "name": "Studio zum Arbeiten",  
+  "beschreibung": "Ein Studio mit guter Belichtung. Perfekt zum Arbeiten!",  
+  "ort": {  
+      "type": "Point",  
+      "koordinaten": [13.4050, 52.5200] 
+  },  
+  "bewohner_ids": ["max.muster@mail.com ", "marian.mueller@mail.ch"], 
+  "besitzer_id": "friedrich.meier@mail.ch", 
+  "zimmer": 2,  
+  "fläche": 20,  
+  "gebucht_von": ISODate("2024-03-14T00:00:00Z"), 
+  "gebucht_bis": ISODate("2024-03-21T00:00:00Z") 
 } 
 ```
 
@@ -107,16 +106,15 @@ db.persons.deleteOne({ _id: "max.mustermann@example.com” })
 
 ```
 { 
-  "_id": ObjectId, 
-  "name": "Studio zum Arbeiten", 
-  "beschreibung": "string", 
-  "besitzer_id": ObjectID, 
-  "ort": { 
-    "type": "Point", 
-    "koordinaten": [longitude, latitude] 
-  }, 
-  "zimmer": "number", 
-  "fläche": "number", 
+  "name": "Studio zum Arbeiten",  
+  "beschreibung": "Ein Studio mit guter Belichtung. Perfekt zum Arbeiten!",  
+  "ort": {  
+      "type": "Point",  
+      "koordinaten": [13.4050, 52.5200] 
+  },  
+  "besitzer_id": "friedrich.meier@mail.ch", 
+  "zimmer": 2,  
+  "fläche": 20 
 } 
 ```
  
@@ -125,16 +123,15 @@ db.persons.deleteOne({ _id: "max.mustermann@example.com” })
 
 ```
 { 
-  "_id": ObjectId, 
-  "name": "Studio zum Arbeiten", 
-  "besitzer_id": ObjectID, 
-  "ort": { 
-    "type": "Point", 
-    "coordinates": [longitude, latitude] 
-  }, 
-  "zimmer": "number", 
-  "fläche": "number", 
-}
+  "name": "Studio zum Arbeiten",  
+  "ort": {  
+      "type": "Point",  
+      "koordinaten": [13.4050, 52.5200] 
+  },  
+  "besitzer_id": "friedrich.meier@mail.ch", 
+  "zimmer": 2,  
+  "fläche": 20 
+} 
 ```
 
 ## Daten anzeigen
@@ -142,8 +139,8 @@ db.persons.deleteOne({ _id: "max.mustermann@example.com” })
 ### eine entität anzeigen 
 
 ```
-db.rooms.findOne({ _id: ObjectId("your_room_id") }) 
-db.persons.findOne({ _id: ObjectId("your_person_id") }) 
+db.rooms.findOne({ _id: ObjectId("65f321caeb1f6bbd3a48cf49") }) 
+db.persons.findOne ({ _id: "max.mustermann@example.com" }) 
 ```
 
 ### alle entitäten anzeigen 
