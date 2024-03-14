@@ -164,21 +164,17 @@ Realistisches Anzeigen von Daten, wie sie in etwa in der App funktionieren:
 
 
 
-etwas finden
+eine entität anzeigen
 ```
 db.rooms.findOne({ _id: ObjectId("your_room_id") })
+db.persons.findOne({ _id: ObjectId("your_person_id") })
 ```
 
-alle räume anzeigen
+alle entitäten anzeigen
 ```
 db.rooms.find({})
+db.persons.find({})
 ```
 
-ein
-```
-[TODO]
-```
-[TODO]
-[TODO]
-[TODO]
+
 [TODO]
