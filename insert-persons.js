@@ -1,4 +1,4 @@
-[
+db.rooms.insertMany([
   {
     "_id": "john.doe@example.com",
     "vorname": "John",
@@ -49,4 +49,4 @@
     "telefon": "+9900112233",
     "email": "michael.adams@example.com"
   }
-]
+])
