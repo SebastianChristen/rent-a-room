@@ -54,7 +54,6 @@ db.rooms.insertMany([
   },
   {
     "name": "Alpenhütte",
-    "beschreibung": "Eine rustikale Hütte in den Alpen",
     "ort": {
       "type": "Point",
       "koordinaten": [11.0778, 47.4917]
@@ -96,17 +95,13 @@ db.rooms.insertMany([
   },
   {
     "name": "Ferienwohnung am Fluss",
-    "beschreibung": "Eine gemütliche Ferienwohnung am Ufer eines Flusses",
     "ort": {
       "type": "Point",
       "koordinaten": [13.3766, 52.5166]
     },
-    "bewohner_ids": ["emma.jackson@example.com", "sarah.johnson@example.com"],
     "besitzer_id": "john.doe@example.com",
     "zimmer": 1,
-    "fläche": 80,
-    "gebucht_von": ISODate("2024-10-10T00:00:00Z"),
-    "gebucht_bis": ISODate("2024-10-20T00:00:00Z")
+    "fläche": 80
   },
   {
     "name": "Chalet am See",
@@ -216,7 +211,6 @@ db.rooms.insertMany([
   },
   {
     "name": "Almhütte",
-    "beschreibung": "Eine traditionelle Almhütte auf einer Bergwiese",
     "ort": {
       "type": "Point",
       "koordinaten": [11.0833, 47.5094]
