@@ -172,7 +172,7 @@ db.rooms.find({"fläche": { $gt: 100 } })
 Realistisches Anzeigen von Daten, wie sie in etwa in der App funktionieren:
 
 [Alle]
-- Alle Räume finden, egal wo
+- Alle LEEREN Räume finden, egal wo
 - Sortieren/Filtern nach Ort, Fläche, Zimmeranzahl etc.
 
 [Nur jeder User für sich]
