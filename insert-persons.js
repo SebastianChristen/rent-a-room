@@ -48,5 +48,12 @@ db.rooms.insertMany([
     "nachname": "Adams",
     "telefon": "+9900112233",
     "email": "michael.adams@example.com"
+  },
+    {
+    "_id": "sarah.johnson@example.com",
+    "vorname": "Sarah",
+    "nachname": "Johnson",
+    "telefon": "+968736248",
+    "email": "sarah.johnson@example.com"
   }
 ])
