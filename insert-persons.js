@@ -1,4 +1,4 @@
-db.rooms.insertMany([
+db.persons.insertMany([
   {
     "_id": "john.doe@example.com",
     "vorname": "John",
