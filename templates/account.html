@@ -45,7 +45,6 @@
     <select name="geschlecht">
         <option value="männlich" {% if person.geschlecht == 'männlich' %}selected{% endif %}>Männlich</option>
         <option value="weiblich" {% if person.geschlecht == 'weiblich' %}selected{% endif %}>Weiblich</option>
-        <option value="divers" {% if person.geschlecht == 'divers' %}selected{% endif %}>Divers</option>
     </select>
     <input type="text" name="telefon" value="{{ person.telefon }}" required>
     <button type="submit">Speichern</button>
