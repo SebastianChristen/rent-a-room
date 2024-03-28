@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raumliste</title>
+    <style>
+        #roomDetails {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Räume</h1>
+    <ul id="roomsList">
+        {% for room in rooms %}
+            <li style="cursor:pointer;" onclick="loadRoomDetails('{{ room._id }}')">{{ room.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <div id="roomDetails"></div>
+    <div id="messageBox"></div>
+
+    <!-- ... (der Rest deines HTML-Codes) -->
+
+<script>
+    function loadRoomDetails(id) {
+        fetch(`/room/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                const details = document.getElementById('roomDetails');
+                let htmlContent = `
+                    <h2>${data.name}</h2>
+                    <p>${data.beschreibung}</p>
+                    <p>Ort: ${data.ort.koordinaten.join(', ')}</p>
+                    <p>Besitzer: ${data.besitzer_id}</p>
+                    <p>Anzahl Zimmer: ${data.zimmer}</p>
+                    <p>Fläche: ${data.fläche}m²</p>
+                `;
+
+                // Überprüfe, ob das bewohner_ids Attribut leer oder nicht vorhanden ist
+                if (!data.bewohner_ids || data.bewohner_ids.length === 0) {
+                    htmlContent += `
+                        <form id="bookingForm">
+                            <input type="date" id="gebuchtVon" required>
+                            <input type="date" id="gebuchtBis" required>
+                            <input type="text" id="bewohner" placeholder="Bewohner-Emails, durch Kommas getrennt">
+                            <button type="submit">Buchen</button>
+                        </form>
+                    `;
+                }
+
+                details.innerHTML = htmlContent;
+
+                // Falls das Formular existiert, füge einen Event-Listener hinzu
+                const bookingForm = document.getElementById('bookingForm');
+                if (bookingForm) {
+                    bookingForm.addEventListener('submit', function(event) {
+                        event.preventDefault();
+                        updateRoomDetails(id);
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateRoomDetails(roomId) {
+        const gebuchtVon = document.getElementById('gebuchtVon').value;
+        const gebuchtBis = document.getElementById('gebuchtBis').value;
+        const bewohner = document.getElementById('bewohner').value;
+        const messageBox = document.getElementById("messageBox")
+
+        fetch(`/update-room/${roomId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                gebucht_von: gebuchtVon,
+                gebucht_bis: gebuchtBis,
+                bewohner_ids: bewohner
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Aktualisiere die Ansicht oder informiere den Benutzer über den Erfolg
+                messageBox.innerText = "Erfolgreich gebucht!";
+                messageBox.style.color = "green";
+                loadRoomDetails(roomId);
+            } else {
+                // Fehlerbehandlung
+                messageBox.htmlContent = 'Aktualisierung fehlgeschlagen';
+                messageBox.style.color = "red";
+            }
+        })
+        .catch(error =>  (messageBox.htmlContent = error));    
+    }
+</script>
+
+<!-- ... (der Rest deines HTML-Codes) -->
+
+</body>
+</html>
