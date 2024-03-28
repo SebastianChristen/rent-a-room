@@ -28,6 +28,21 @@ def room(id):
     return dumps(room)
 
 @app.route('/update-room/<id>', methods=['POST'])
+
+
+@app.route('/sell')
+def sell():
+    return render_template('sell.html')
+
+@app.route('/account')
+def account():
+    return render_template('account.html')
+
+
+
+
+
+
 def update_room(id):
     room_data = request.json
     # Formatierung der Daten von Strings zu Datumsobjekten
