@@ -34,11 +34,6 @@ def room(id):
 def sell():
     return render_template('sell.html')
 
-@app.route('/account')
-def account():
-    return render_template('account.html')
-
-
 
 
 
@@ -61,6 +56,22 @@ def update_room(id):
     )
 
     return jsonify({'success': result.modified_count > 0})
+
+
+@app.route('/account/<email>')
+def account(email):
+    person = db.persons.find_one({"_id": email})
+    if not person:
+        return "Person nicht gefunden", 404
+
+    # Suche nach Räumen, bei denen die Person entweder Besitzer oder Bewohner ist.
+    rooms_owned = list(collection.find({"besitzer_id": email}))
+    rooms_rented = list(collection.find({"bewohner_ids": email}))
+
+    # Render das Template und übergebe die Person und die Raumdaten
+    return render_template('account.html', person=person, rooms_owned=rooms_owned, rooms_rented=rooms_rented)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konto</title>
+    <!-- ... Deine vorherigen Head-Inhalte ... -->
 </head>
 <body>
-    <h1>Konto-Seite (In Bearbeitung)</h1>
+    <h1>Konto von {{ person.vorname }} {{ person.nachname }}</h1>
+    <div>
+        <h2>Persönliche Informationen</h2>
+        <p>Email: {{ person.email }}</p>
+        <p>Alter: {{ person.alter }}</p>
+        <p>Geschlecht: {{ person.geschlecht }}</p>
+        <p>Telefon: {{ person.telefon }}</p>
+    </div>
+
+    <div>
+        <h2>Besitzende Räume</h2>
+        <ul>
+            {% for room in rooms_owned %}
+                <li>{{ room.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2>Gemietete Räume</h2>
+        <ul>
+            {% for room in rooms_rented %}
+                <li>       
+                    {{ room.name }} - Gemietet von: {{ room.gebucht_von.strftime('%d.%m.%Y') }} bis: {{ room.gebucht_bis.strftime('%d.%m.%Y') }}
+                </li>
+
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
