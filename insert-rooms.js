@@ -2,10 +2,7 @@ db.rooms.insertMany([
   {
     "name": "Gemütliches Cottage",
     "beschreibung": "Ein charmantes Cottage am Seeufer",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [9.1705, 48.7823]
-    },
+    "adresse": "Bergstrasse 28, 3952 Berghausen",
     "besitzer_id": "emma.jackson@example.com",
     "zimmer": 2,
     "fläche": 120
@@ -13,10 +10,7 @@ db.rooms.insertMany([
   {
     "name": "Bergidyll",
     "beschreibung": "Ein abgelegenes Berghaus mit Panoramablick",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [10.0848, 47.5917]
-    },
+    "adresse": "Bergstrasse 90, 3952 Berghausen",
     "bewohner_ids": ["emma.jackson@example.com"],
     "besitzer_id": "john.doe@example.com",
     "zimmer": 3,
@@ -27,10 +21,7 @@ db.rooms.insertMany([
   {
     "name": "Strandvilla",
     "beschreibung": "Eine luxuriöse Strandvilla mit eigenem Zugang zum Meer",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [7.0926, 51.4195]
-    },
+    "adresse": "Strandstrasse 1b, 9522 Meer",
     "bewohner_ids": ["james.brown@example.com", "sophie.wilson@example.com"],
     "besitzer_id": "michael.adams@example.com",
     "zimmer": 4,
@@ -41,10 +32,7 @@ db.rooms.insertMany([
   {
     "name": "Stadtpalast",
     "beschreibung": "Ein prächtiger Palast im Herzen der Stadt",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [13.4049, 52.5200]
-    },
+    "adresse": "Stadtweg 8, 5202 Städtchen",
     "bewohner_ids": ["michael.adams@example.com", "sarah.johnson@example.com"],
     "besitzer_id": "sophie.wilson@example.com",
     "zimmer": 6,
@@ -54,10 +42,7 @@ db.rooms.insertMany([
   },
   {
     "name": "Alpenhütte",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [11.0778, 47.4917]
-    },
+    "adresse": "Alpenweg 29, 0392 Rue des Alpes",
     "bewohner_ids": ["sarah.johnson@example.com"],
     "besitzer_id": "james.brown@example.com",
     "zimmer": 2,
@@ -68,10 +53,7 @@ db.rooms.insertMany([
   {
     "name": "Seehaus",
     "beschreibung": "Ein modernes Haus direkt am See",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [6.9537, 46.8182]
-    },
+    "adresse": "Am See 2a, 1270 Thun",
     "bewohner_ids": ["john.doe@example.com", "michael.adams@example.com"],
     "besitzer_id": "sarah.johnson@example.com",
     "zimmer": 3,
@@ -82,10 +64,7 @@ db.rooms.insertMany([
   {
     "name": "Waldhütte",
     "beschreibung": "Eine gemütliche Hütte mitten im Wald",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [8.6127, 47.3963]
-    },
+    "adresse": "Waldstrasse 66, 3456 Waldhausen",
     "bewohner_ids": ["sophie.wilson@example.com", "john.doe@example.com"],
     "besitzer_id": "james.brown@example.com",
     "zimmer": 2,
@@ -95,10 +74,7 @@ db.rooms.insertMany([
   },
   {
     "name": "Ferienwohnung am Fluss",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [13.3766, 52.5166]
-    },
+    "adresse": "Flussstrasse 3, 10115 Berlin",
     "besitzer_id": "john.doe@example.com",
     "zimmer": 1,
     "fläche": 80
@@ -106,10 +82,7 @@ db.rooms.insertMany([
   {
     "name": "Chalet am See",
     "beschreibung": "Ein gemütliches Chalet mit Blick auf den See",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [8.5619, 47.3769]
-    },
+    "adresse": "Seestrasse 47, 8002 Zürich",
     "bewohner_ids": ["james.brown@example.com"],
     "besitzer_id": "sophie.wilson@example.com",
     "zimmer": 3,
@@ -120,10 +93,7 @@ db.rooms.insertMany([
   {
     "name": "Stadtwohnung",
     "beschreibung": "Eine moderne Wohnung im Stadtzentrum",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [11.5761, 48.1371]
-    },
+    "adresse": "Stadtzentrumstrasse 12, 80331 München",
     "bewohner_ids": ["jane.smith@example.com"],
     "besitzer_id": "emma.jackson@example.com",
     "zimmer": 2,
@@ -134,10 +104,7 @@ db.rooms.insertMany([
   {
     "name": "Landhaus",
     "beschreibung": "Ein idyllisches Landhaus mit großem Garten",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [13.4050, 52.5200]
-    },
+    "adresse": "Landhausweg 5, 10407 Berlin",
     "bewohner_ids": ["john.doe@example.com", "james.brown@example.com"],
     "besitzer_id": "sarah.johnson@example.com",
     "zimmer": 4,
@@ -147,11 +114,7 @@ db.rooms.insertMany([
   },
   {
     "name": "Ferienhaus am Wald",
-    "beschreibung": "Ein gemütliches Ferienhaus am Waldrand",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [8.3913, 49.0047]
-    },
+    "adresse": "Waldweg 88, 76131 Karlsruhe",
     "besitzer_id": "jane.smith@example.com",
     "zimmer": 3,
     "fläche": 160
@@ -159,10 +122,7 @@ db.rooms.insertMany([
   {
     "name": "Strandhaus",
     "beschreibung": "Ein charmantes Strandhaus mit Meerblick",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [7.1100, 51.3674]
-    },
+    "adresse": "Strandweg 101, 59821 Arnsberg",
     "besitzer_id": "sophie.wilson@example.com",
     "zimmer": 2,
     "fläche": 110
@@ -170,10 +130,7 @@ db.rooms.insertMany([
   {
     "name": "Hütte im Tal",
     "beschreibung": "Eine einfache Hütte inmitten eines Tals",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [8.6815, 47.3769]
-    },
+    "adresse": "Talweg 33, 8001 Zürich",
     "bewohner_ids": ["sophie.wilson@example.com", "john.doe@example.com"],
     "besitzer_id": "jane.smith@example.com",
     "zimmer": 1,
@@ -184,10 +141,7 @@ db.rooms.insertMany([
   {
     "name": "Ferienwohnung am Berg",
     "beschreibung": "Eine gemütliche Ferienwohnung in den Bergen",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [11.0778, 47.4917]
-    },
+    "adresse": "Bergstrasse 111, 6020 Innsbruck",
     "bewohner_ids": ["jane.smith@example.com"],
     "besitzer_id": "james.brown@example.com",
     "zimmer": 2,
@@ -198,10 +152,7 @@ db.rooms.insertMany([
   {
     "name": "Seeapartment",
     "beschreibung": "Ein modernes Apartment mit Seeblick",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [9.1625, 47.0962]
-    },
+    "adresse": "Seeblickstrasse 20, 6005 Luzern",
     "bewohner_ids": ["emma.jackson@example.com"],
     "besitzer_id": "michael.adams@example.com",
     "zimmer": 1,
@@ -211,10 +162,7 @@ db.rooms.insertMany([
   },
   {
     "name": "Almhütte",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [11.0833, 47.5094]
-    },
+    "adresse": "Almhüttenweg 14, 6100 Seefeld",
     "besitzer_id": "sophie.wilson@example.com",
     "zimmer": 2,
     "fläche": 100
@@ -222,10 +170,7 @@ db.rooms.insertMany([
   {
     "name": "Wasserhaus",
     "beschreibung": "Ein modernes Haus auf Stelzen im Wasser",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [9.1743, 48.7758]
-    },
+    "adresse": "Wasserweg 47, 70173 Stuttgart",
     "besitzer_id": "michael.adams@example.com",
     "zimmer": 3,
     "fläche": 200
@@ -233,10 +178,7 @@ db.rooms.insertMany([
   {
     "name": "Ferienhaus am Flussufer",
     "beschreibung": "Ein gemütliches Ferienhaus am Ufer eines Flusses",
-    "ort": {
-      "type": "Point",
-      "koordinaten": [13.4069, 52.5194]
-    },
+    "adresse": "Flussuferstrasse 12, 10179 Berlin",
     "bewohner_ids": ["john.doe@example.com"],
     "besitzer_id": "james.brown@example.com",
     "zimmer": 2,
