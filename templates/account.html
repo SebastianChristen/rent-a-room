@@ -35,6 +35,33 @@
     </div>
 
 
+
+<!-- Bearbeitungsformular -->
+<button id="editBtn">Bearbeiten</button>
+<form id="editForm" action="{{ url_for('update_account') }}" method="post" style="display: none;">
+    <input type="text" name="vorname" value="{{ person.vorname }}" required>
+    <input type="text" name="nachname" value="{{ person.nachname }}" required>
+    <input type="number" name="alter" value="{{ person.alter }}" required>
+    <select name="geschlecht">
+        <option value="männlich" {% if person.geschlecht == 'männlich' %}selected{% endif %}>Männlich</option>
+        <option value="weiblich" {% if person.geschlecht == 'weiblich' %}selected{% endif %}>Weiblich</option>
+        <option value="divers" {% if person.geschlecht == 'divers' %}selected{% endif %}>Divers</option>
+    </select>
+    <input type="text" name="telefon" value="{{ person.telefon }}" required>
+    <button type="submit">Speichern</button>
+</form>
+
+<script>
+document.getElementById('editBtn').onclick = function() {
+    var form = document.getElementById('editForm');
+    form.style.display = form.style.display === 'none' ? '' : 'none';
+};
+</script>
+
+
+
+
+
     <a href="/logout">Ausloggen</a>
 </body>
 </html>

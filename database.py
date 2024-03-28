@@ -4,6 +4,7 @@ from bson import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
 from flask import request
+from flask import request, jsonify
 
 from flask import Flask, render_template, request, redirect, url_for, session
 
@@ -100,6 +101,32 @@ def account():
 def logout():
     session.pop('email', None)
     return redirect(url_for('home'))
+
+
+
+
+@app.route('/update-account', methods=['POST'])
+def update_account():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    
+    email = session['email']
+    # Extrahiere die aktualisierten Daten aus dem Formular
+    updated_data = {
+        'vorname': request.form['vorname'],
+        'nachname': request.form['nachname'],
+        'alter': int(request.form['alter']),
+        'geschlecht': request.form['geschlecht'],
+        'telefon': request.form['telefon'],
+    }
+
+    # Aktualisiere die Daten in der 'persons'-Collection
+    db.persons.update_one({'_id': email}, {'$set': updated_data})
+
+
+    return redirect(url_for('account'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
