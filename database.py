@@ -51,11 +51,6 @@ def room(id):
 @app.route('/update-room/<id>', methods=['POST'])
 
 
-@app.route('/sell')
-def sell():
-    return render_template('sell.html')
-
-
 
 
 
@@ -125,6 +120,41 @@ def update_account():
 
 
     return redirect(url_for('account'))
+
+
+
+@app.route('/sell', methods=['GET', 'POST'])
+def sell():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        new_room = {
+            "name": request.form['name'],
+            "beschreibung": request.form['beschreibung'],
+            "ort": request.form['ort'],
+            "zimmer": int(request.form['zimmer']),
+            "fläche": float(request.form['fläche']),
+            "besitzer_id": session['email'],
+            # Initialisiere 'bewohner_ids' als leere Liste
+            "bewohner_ids": []
+        }
+        
+        # Füge den neuen Raum zur 'rooms'-Collection hinzu
+        db.rooms.insert_one(new_room)
+        return redirect(url_for('home'))  # Oder eine Bestätigungsseite anzeigen
+    
+    else:
+        email = session['email']
+        owned_rooms = list(db.rooms.find({"besitzer_id": email}))
+
+    return render_template('sell.html', owned_rooms=owned_rooms)
+
+
+
+
+    return render_template('sell.html')
+
 
 
 
