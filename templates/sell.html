@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <!-- ... Dein Head-Inhalt ... -->
+</head>
+<body>
+    <h1>Raum vermieten</h1>
+    <form action="{{ url_for('sell') }}" method="post">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="beschreibung">Beschreibung:</label>
+            <textarea id="beschreibung" name="beschreibung" required></textarea>
+        </div>
+        <div>
+            <label for="ort">Ort:</label>
+            <input type="text" id="ort" name="ort" required>
+        </div>
+        <div>
+            <label for="zimmer">Anzahl Zimmer:</label>
+            <input type="number" id="zimmer" name="zimmer" required>
+        </div>
+        <div>
+            <label for="fläche">Fläche in m²:</label>
+            <input type="text" id="fläche" name="fläche" required pattern="[0-9]+([,\.][0-9]+)?">
+        </div>
+        <button type="submit">Raum anbieten</button>
+    </form>
+
+<!-- Vorhandene Einträge für das Hinzufügen eines Raums -->
+<!-- ... -->
+
+<!-- Liste der Räume, die der Benutzer besitzt -->
+<h2>Meine angebotenen Räume</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Beschreibung</th>
+            <th>Ort</th>
+            <th>Anzahl Zimmer</th>
+            <th>Fläche in m²</th>
+            <!-- Weitere Spalten nach Bedarf -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for room in owned_rooms %}
+        <tr>
+            <td>{{ room.name }}</td>
+            <td>{{ room.beschreibung }}</td>
+            <td>{{ room.ort }}</td>
+            <td>{{ room.zimmer }}</td>
+            <td>{{ room.fläche }}</td>
+            <!-- Weitere Datenzellen nach Bedarf -->
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5">Keine Räume gefunden.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+</body>
+</html>
