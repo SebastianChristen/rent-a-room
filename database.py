@@ -5,14 +5,34 @@ from bson.json_util import dumps
 from datetime import datetime
 from flask import request
 
+from flask import Flask, render_template, request, redirect, url_for, session
+
 app = Flask(__name__)
+app.secret_key = 'dein_sehr_geheimer_schluessel'  # Ändere dies zu einem echten geheimen Schlüssel
+
+# ... (Rest deines Codes)
+
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client['rent-a-room']
 collection = db.rooms
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['email'] = request.form['email']
+        return redirect(url_for('home'))
+    return render_template('login.html')
+
+
+
+
 @app.route('/')
 def home():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    # ... Der Rest deiner Home-Logik ...
+
     rooms = collection.find(
         {'$or': [
             {'bewohner_ids': {'$exists': False}},
@@ -57,9 +77,13 @@ def update_room(id):
 
     return jsonify({'success': result.modified_count > 0})
 
+@app.route('/account')
+def account():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    email = session['email']
 
-@app.route('/account/<email>')
-def account(email):
+    # Hole die Personendaten aus der "persons"-Collection
     person = db.persons.find_one({"_id": email})
     if not person:
         return "Person nicht gefunden", 404
@@ -72,6 +96,10 @@ def account(email):
     return render_template('account.html', person=person, rooms_owned=rooms_owned, rooms_rented=rooms_rented)
 
 
+@app.route('/logout')
+def logout():
+    session.pop('email', None)
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
