@@ -199,6 +199,6 @@ Realistisches Anzeigen von Daten, wie sie in etwa in der App funktionieren:
 ```mermaid
 graph TD;
       main.my --> gui.py;
-      guy.py --> db_connection.py;
-
+      gui.py <--> db_connection.py;
+```
 
