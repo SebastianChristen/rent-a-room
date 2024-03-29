@@ -194,11 +194,12 @@ Realistisches Anzeigen von Daten, wie sie in etwa in der App funktionieren:
 [Einmalig]
 - Benutzer erstellen
 
-
-
 ```mermaid
 graph TD;
-      main.my --> gui.py;
-      gui.py <--> db_connection.py;
+    main.my --> gui.py;
+    gui.py -->|Verbindung herstellen| db_connection.py;
+    classDef dbClass fill:#f9f,stroke:#333,stroke-width:2px;
+    class Database dbClass
+    Database["Datenbank"] -->|Datenzugriff| gui.py
 ```
 
