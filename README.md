@@ -193,3 +193,12 @@ Realistisches Anzeigen von Daten, wie sie in etwa in der App funktionieren:
 
 [Einmalig]
 - Benutzer erstellen
+
+
+
+```mermaid
+graph TD;
+      main.my --> gui.py;
+      guy.py --> db_connection.py;
+
+
