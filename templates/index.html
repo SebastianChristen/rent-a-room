@@ -62,7 +62,7 @@
                         <form id="bookingForm">
                             <input type="date" id="gebuchtVon" required>
                             <input type="date" id="gebuchtBis" required>
-                            <input type="text" id="bewohner" placeholder="Bewohner-Emails, durch Kommas getrennt">
+                            <input type="text" id="bewohner" placeholder="Bewohner-Emails, durch Kommas getrennt" value="{{ session['email'] }}" >
                             <button type="submit">Buchen</button>
                         </form>
                     `;
