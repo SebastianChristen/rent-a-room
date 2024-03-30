@@ -1,20 +1,24 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
-from flask import request
-from flask import request, jsonify
-
-from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
-app.secret_key = 'dein_sehr_geheimer_schluessel'  # Ändere dies zu einem echten geheimen Schlüssel
+app.secret_key = 'dein_sehr_geheimer_schluessel'
 
-# ... (Rest deines Codes)
+# Anmeldeinformationen für die MongoDB
+mongodb_username = 'rent-a-room-service-user'
+mongodb_password = 'sml12345'
+mongodb_host = 'localhost'
+mongodb_port = 27017
+mongodb_auth_source = 'admin'
 
+# MongoDB-Verbindung mit Anmeldeinformationen
+mongodb_uri = f'mongodb://{mongodb_username}:{mongodb_password}@{mongodb_host}:{mongodb_port}/?authSource={mongodb_auth_source}'
+client = MongoClient(mongodb_uri)
 
-client = MongoClient('mongodb://localhost:27017/')
+# Datenbank und Sammlung auswählen
 db = client['rent-a-room']
 collection = db.rooms
 
