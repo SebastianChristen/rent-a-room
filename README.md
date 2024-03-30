@@ -193,3 +193,14 @@ Realistisches Anzeigen von Daten, wie sie in etwa in der App funktionieren:
 
 [Einmalig]
 - Benutzer erstellen
+
+  
+```mermaid
+graph TD;
+    Benutzer -->|startet Script| main.py;
+    main.py --> gui.py;
+    gui.py <--> db_connection.py;
+    db_connection.py -->|verbindet|MongoDB;
+```
+
+
