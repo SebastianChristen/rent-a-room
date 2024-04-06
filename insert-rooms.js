@@ -80,6 +80,20 @@ db.rooms.insertMany([
     "fläche": 80
   },
   {
+    "name": "kleine Wohnung in Nähe der Stadt",
+    "adresse": "Stadtstrasse 3, 10115 Berlin",
+    "besitzer_id": "james.brown@example.com",
+    "zimmer": 1,
+    "fläche": 30
+  },
+  {
+    "name": Haus am Waldrand",
+    "adresse": "Waldweg 8, 7612 Waldhausen",
+    "besitzer_id": "jane.smith@example.com",
+    "zimmer": 4,
+    "fläche": 180
+  },
+  {
     "name": "Chalet am See",
     "beschreibung": "Ein gemütliches Chalet mit Blick auf den See",
     "adresse": "Seestrasse 47, 8002 Zürich",
