@@ -24,8 +24,8 @@ class Mongo():
             print(x)
             return x
 
-    def newRoom(self, name, desc, loc_type, loc_coords, current_tennants, owner, room_amount, space, occupied_f, occupied_u):
-        mydict = {"name": name, "beschreibung": desc, "ort": {"type": loc_type, "koordinaten": loc_coords}, "current_tennants": current_tennants, "owner": owner, "room_amount": room_amount, "space": space, "occupied_f": occupied_f, "occupied_u": occupied_u}
+    def createRoom(name, desc, address, room_amount, space, owner, owner_id):
+        mydict = {"name": name, "beschreibung": desc, "address": address, "room_amount": room_amount, "space": space, "owner": owner, "owner_id": owner_id}
         Mongo.room.inster_one(mydict)
         return 0
 
@@ -33,6 +33,14 @@ class Mongo():
         for x in Mongo.room.find({"name": filtername}, {"_id": 1, "name": 1, "beschreibung": 1, "owner": 1}):
             print(x)
             return x
+
+    def getRoomByOwner(owner, owner_id):
+        for x in Mongo.room.find({"owner": owner, "owner_id": owner_id}, {"_id": 1, "name": 1, "beschreibung": 1}):
+            print(x)
+            return x
+
+
+
     def getAllRooms(self):
         for x in Mongo.room.find({}, {}):
             print(x)

@@ -98,8 +98,9 @@ def create_user(firstname, name, email, address, password, repassword, telnr):
 
 
 # Erstellt ein neues Login für einen bestimmten User. IN DER APP ALS S
-def create_login(firstname, name, address, email, telnr):
-    feedbackCreate = Mongo.createLogin(firstname, name, address, email, telnr)
+# Erstellt eine neue Location
+def create_room(name, desc, address, rooms, space):
+    feedbackCreate = Mongo.createRoom(name, desc, address, rooms, space, loggedInUsername, loggedInUserId)
     if (not feedbackCreate):
         error_frame("error: couldn't create login")
     else:
@@ -210,13 +211,17 @@ def set_create_login_frame():
     informationFrame.grid_remove()
     for child in informationFrame.winfo_children():
         child.destroy()
-    plattformNameInput = customtkinter.CTkEntry(master=informationFrame, placeholder_text="Plattform Name")
-    plattformNameInput.pack(pady=10, padx=10)
-    usernameInput = customtkinter.CTkEntry(master=informationFrame, placeholder_text="Username")
-    usernameInput.pack(pady=10, padx=10)
-    passwordInput = customtkinter.CTkEntry(master=informationFrame, placeholder_text="Password")
-    passwordInput.pack(pady=10, padx=10)
-    createButton = customtkinter.CTkButton(master=informationFrame, text="Create", command=lambda: create_login(plattformNameInput.get(), usernameInput.get(), passwordInput.get(), loggedInUserId))
+    name = customtkinter.CTkEntry(master=informationFrame, placeholder_text="name")
+    name.pack(pady=10, padx=10)
+    desc = customtkinter.CTkEntry(master=informationFrame, placeholder_text="desc")
+    desc.pack(pady=10, padx=10)
+    address = customtkinter.CTkEntry(master=informationFrame, placeholder_text="address")
+    address.pack(pady=10, padx=10)
+    rooms = customtkinter.CTkEntry(master=informationFrame, placeholder_text="rooms")
+    rooms.pack(pady=10, padx=10)
+    space = customtkinter.CTkEntry(master=informationFrame, placeholder_text="space")
+    space.pack(pady=10, padx=10)
+    createButton = customtkinter.CTkButton(master=informationFrame, text="Create", command=lambda: create_room(name.get(), desc.get(), address.get(), rooms.get(), space.get()))
     createButton.pack(pady=10, padx=10)
     grid_information()
 
@@ -228,8 +233,7 @@ def set_start_frame(alreadyEntries):
     else:
         description = 'You currently have no logins. \nStart creating your own logins by pressing on the "Create Login" button.'
     informationFrame.grid_remove()
-    startTitle = customtkinter.CTkLabel(master=informationFrame, text="Welcome to PassVault, " + loggedInUsername + ".",
-                                        font=("Roboto", 36))
+    startTitle = customtkinter.CTkLabel(master=informationFrame, text="Welcome to Rend - A - Room, " + loggedInUsername + ".", font=("Roboto", 36))
     startTitle.pack(pady=(10, 30), padx=10)
     description = customtkinter.CTkLabel(master=informationFrame, text=description)
     description.pack(pady=10, padx=10)
@@ -314,7 +318,7 @@ def set_main():
     grid_information()
 
     # Hohlt alle akutellen Logins und zeigt diese am Rand an
-    userInfo = database.select_logins_by_user(loggedInUsername)
+    userInfo = Mongo.getRoomByOwner(loggedInUsername, loggedInUserId)
     if (not userInfo):
         set_start_frame(False)
     else:
