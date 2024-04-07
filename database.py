@@ -47,15 +47,30 @@ def home():
     )
     return render_template('index.html', rooms=rooms)
 
-@app.route('/room/<id>')
-def room(id):
-    room = collection.find_one({'_id': ObjectId(id)})
-    return dumps(room)
+
 
 @app.route('/update-room/<id>', methods=['POST'])
 
 
+@app.route('/room/<room_id>')
+def room_detail(room_id):
+    room = collection.find_one({'_id': ObjectId(room_id)})
+    if room is not None:
+        return render_template('roomdetail.html', room=room)
+    else:
+        return 'Raum nicht gefunden', 404
 
+@app.route('/book-room/<room_id>', methods=['POST'])
+def book_room(room_id):
+    # Extrahiere Daten aus dem Formular
+    gebucht_von = request.form.get('gebucht_von')
+    gebucht_bis = request.form.get('gebucht_bis')
+    bewohner = request.form.get('bewohner')
+    
+    # Verarbeite die Buchung hier...
+    # Zum Beispiel, aktualisiere die Datenbank mit den Buchungsdetails
+
+    return redirect(url_for('room_detail', room_id=room_id))
 
 
 def update_room(id):
