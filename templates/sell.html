@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <!-- ... Dein Head-Inhalt ... -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='sell.css') }}">
 </head>
 <body>
     <h1>Raum vermieten</h1>
@@ -15,8 +15,8 @@
             <textarea id="beschreibung" name="beschreibung" required></textarea>
         </div>
         <div>
-            <label for="ort">Ort:</label>
-            <input type="text" id="ort" name="ort" required>
+            <label for="adresse">Adresse:</label>
+            <input type="text" id="adresse" name="adresse" required>
         </div>
         <div>
             <label for="zimmer">Anzahl Zimmer:</label>
@@ -50,7 +50,7 @@
         <tr>
             <td>{{ room.name }}</td>
             <td>{{ room.beschreibung }}</td>
-            <td>{{ room.ort }}</td>
+            <td>{{ room.adresse }}</td>
             <td>{{ room.zimmer }}</td>
             <td>{{ room.fläche }}</td>
             <!-- Weitere Datenzellen nach Bedarf -->
