@@ -2,8 +2,21 @@
 <html lang="de">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='sell.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='shared.css') }}">
 </head>
 <body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Rooms</a></li>
+                <li><a href="/sell">Sell</a></li>
+                <li><a href="/account">Account</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
     <h1>Raum vermieten</h1>
     <form action="{{ url_for('sell') }}" method="post">
         <div>
