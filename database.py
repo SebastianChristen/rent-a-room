@@ -136,7 +136,7 @@ def sell():
         new_room = {
             "name": request.form['name'],
             "beschreibung": request.form['beschreibung'],
-            "ort": request.form['ort'],
+            "adresse": request.form['adresse'],
             "zimmer": int(request.form['zimmer']),
             "fläche": float(request.form['fläche']),
             "besitzer_id": session['email'],

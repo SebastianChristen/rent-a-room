@@ -87,7 +87,7 @@ db.rooms.insertMany([
     "fläche": 30
   },
   {
-    "name": Haus am Waldrand",
+    "name": "Haus am Waldrand",
     "adresse": "Waldweg 8, 7612 Waldhausen",
     "besitzer_id": "jane.smith@example.com",
     "zimmer": 4,
