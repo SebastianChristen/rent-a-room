@@ -2,7 +2,6 @@ import customtkinter
 import re
 from db_connection import Mongo
 
-
 root = customtkinter.CTk()
 loginFrame = customtkinter.CTkFrame(master=root)
 registerFrame = customtkinter.CTkFrame(master=root)
@@ -102,15 +101,15 @@ def create_user(firstname, name, email, address, password, repassword, telnr):
 def create_room(name, desc, address, rooms, space):
     feedbackCreate = Mongo.createRoom(name, desc, address, rooms, space, loggedInUsername, loggedInUserId)
     if (not feedbackCreate):
-        error_frame("error: couldn't create login")
+        error_frame("error: couldn't create room")
     else:
         set_main()  # Erfrischt die gnaze Seite für das der neue Eintrag sichtbar ist
         set_login_frame(feedbackCreate)  # Zeigt direkt den Eintrag an, wenn dieser erfolgreich erstellt wurde
 
 
 # Löscht ein Login
-def delete_login(id):
-    feedbackDelete = database.delete_login(id)
+def delete_login(name, owner, owner_id):
+    feedbackDelete = Mongo.deleteRoom(name, owner, owner_id)
     if (not feedbackDelete):
         error_frame("error: couldn't delete login")
     else:
@@ -174,8 +173,8 @@ def set_edit_login_frame(id):
     # Erstellt den Informations Frame für ein einzelnes Login
 
 
-def set_login_frame(id):
-    login = database.select_login(id)
+def set_login_frame():
+    login = Mongo.getRoomByOwner(loggedInUsername, loggedInUserId)
     if (not login):
         error_frame("error: id doesn't match with database entry")
     else:
@@ -195,7 +194,9 @@ def set_login_frame(id):
             passwordSecureOrNot = "Your password is secure."
         passwordSecure = customtkinter.CTkLabel(master=informationFrame, text=passwordSecureOrNot)
         passwordSecure.pack(pady=10, padx=10)
-        passwordSecureInformation = customtkinter.CTkLabel(master=informationFrame, text="We check if the password has atleast 8 smybols, a lowercase letter, an uppercase letter, and a number.", font=("Roboto", 11))
+        passwordSecureInformation = customtkinter.CTkLabel(master=informationFrame,
+                                                           text="We check if the password has atleast 8 smybols, a lowercase letter, an uppercase letter, and a number.",
+                                                           font=("Roboto", 11))
         passwordSecureInformation.pack(pady=10, padx=10)
         editButton = customtkinter.CTkButton(master=informationFrame, text="Edit Login",
                                              command=lambda: set_edit_login_frame(id))
@@ -221,19 +222,22 @@ def set_create_login_frame():
     rooms.pack(pady=10, padx=10)
     space = customtkinter.CTkEntry(master=informationFrame, placeholder_text="space")
     space.pack(pady=10, padx=10)
-    createButton = customtkinter.CTkButton(master=informationFrame, text="Create", command=lambda: create_room(name.get(), desc.get(), address.get(), rooms.get(), space.get()))
+    createButton = customtkinter.CTkButton(master=informationFrame, text="List",command=lambda: create_room(name.get(), desc.get(), address.get(), rooms.get(), space.get()))
     createButton.pack(pady=10, padx=10)
     grid_information()
+
 
 
 # Fügt je nach dem ob man schon Einträge erstellt hat ein anderes Anfangs Frame ein.
 def set_start_frame(alreadyEntries):
     if (alreadyEntries):
-        description = "Miau Miau Miau 0.1 \n by Nicky Lopez"
+        description = "Rent-A-Room 0.1 \n by Nicky Lopez"
     else:
         description = 'You currently have no logins. \nStart creating your own logins by pressing on the "Create Login" button.'
     informationFrame.grid_remove()
-    startTitle = customtkinter.CTkLabel(master=informationFrame, text="Welcome to Rend - A - Room, " + loggedInUsername + ".", font=("Roboto", 36))
+    startTitle = customtkinter.CTkLabel(master=informationFrame,
+                                        text="Welcome to Rent-A-Room\n" + loggedInUsername,
+                                        font=("Roboto", 36))
     startTitle.pack(pady=(10, 30), padx=10)
     description = customtkinter.CTkLabel(master=informationFrame, text=description)
     description.pack(pady=10, padx=10)
@@ -253,18 +257,20 @@ def set_login():
     password = customtkinter.CTkEntry(master=loginFrame, placeholder_text="Password", show="*", width=200)
     password.pack(pady=(5, 12), padx=10)
 
-    login = customtkinter.CTkButton(master=loginFrame, text="Login", command=(lambda: check_login(email.get(), password.get())), width=200)
+    login = customtkinter.CTkButton(master=loginFrame, text="Login",
+                                    command=(lambda: check_login(email.get(), password.get())), width=200)
     login.pack(pady=12, padx=10)
 
     link = customtkinter.CTkFont(family="Roboto", size=12, underline=True)
-    register = customtkinter.CTkLabel(master=loginFrame, text="Don't have an account? Sign Up", font=link, cursor="hand2")
+    register = customtkinter.CTkLabel(master=loginFrame, text="Don't have an account? Sign Up", font=link,
+                                      cursor="hand2")
     register.pack(pady=12, padx=10)
     register.bind("<Button-1>", lambda e: switch_login_register(True))  # Bindet das Button-1 (Klick) Event an.
 
 
 # Erstellt das registrieren Frame
 def set_register():
-    registerFrame.pack(pady=44, padx=200, fill="both", expand=True)
+    registerFrame.pack(pady=25, padx=200, fill="both", expand=True)
 
     label = customtkinter.CTkLabel(master=registerFrame, text="Sign Up", font=("Roboto", 24))
     label.pack(pady=(25, 20), padx=10)
@@ -287,14 +293,19 @@ def set_register():
     password = customtkinter.CTkEntry(master=registerFrame, placeholder_text="Password", show="*", width=200)
     password.pack(pady=(12, 5), padx=10)
 
-    verifyPassword = customtkinter.CTkEntry(master=registerFrame, placeholder_text="Repeat Password", show="*", width=200)
+    verifyPassword = customtkinter.CTkEntry(master=registerFrame, placeholder_text="Repeat Password", show="*",
+                                            width=200)
     verifyPassword.pack(pady=(5, 12), padx=10)
 
-    login = customtkinter.CTkButton(master=registerFrame, text="Sign Up", command=lambda: create_user(firstname.get(), name.get(), email.get(), address.get(), password.get(), verifyPassword.get(), telnr.get()), width=200)
+    login = customtkinter.CTkButton(master=registerFrame, text="Sign Up",
+                                    command=lambda: create_user(firstname.get(), name.get(), email.get(), address.get(),
+                                                                password.get(), verifyPassword.get(), telnr.get()),
+                                    width=200)
     login.pack(pady=12, padx=10)
 
     link = customtkinter.CTkFont(family="Roboto", size=12, underline=True)
-    register = customtkinter.CTkLabel(master=registerFrame, text="Already have an account? Login", font=link, cursor="hand2")
+    register = customtkinter.CTkLabel(master=registerFrame, text="Already have an account? Login", font=link,
+                                      cursor="hand2")
     register.pack(pady=(4, 12), padx=10)
     register.bind("<Button-1>", lambda e: switch_login_register(False))  # Bindet das Button-1 (Klick) Event an.
 
@@ -333,4 +344,3 @@ def set_main():
 
             label.bind("<Button-1>", make_lambda(((userInfo[i])[0])))  # Bindet das Klick Event auf das Frame
             frame.pack(pady=2, padx=2, fill="x")
-

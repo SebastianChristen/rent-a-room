@@ -26,8 +26,8 @@ class Mongo():
 
     def createRoom(name, desc, address, room_amount, space, owner, owner_id):
         mydict = {"name": name, "beschreibung": desc, "address": address, "room_amount": room_amount, "space": space, "owner": owner, "owner_id": owner_id}
-        Mongo.room.inster_one(mydict)
-        return 0
+        Mongo.room.insert_one(mydict)
+        return 1
 
     def getRoom(filtername):
         for x in Mongo.room.find({"name": filtername}, {"_id": 1, "name": 1, "beschreibung": 1, "owner": 1}):
@@ -65,9 +65,9 @@ class Mongo():
             print(x)
             return x
 
-    def deleteRoom(email):
-        objToDelete = {"email": email}
-        Mongo.customer.delete_one(objToDelete)
+    def deleteRoom(name, owner, owner_id):
+        objToDelete = {"name": name, "owner": owner, "owner_id": owner_id}
+        Mongo.room.delete_one(objToDelete)
         if(not Mongo.customer.find(objToDelete)):
             return 1
 
