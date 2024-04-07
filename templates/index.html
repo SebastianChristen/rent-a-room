@@ -36,8 +36,9 @@
         {% endfor %}
     </ul>
 
-    <div id="roomDetails"></div>
-    <div id="messageBox"></div>
+    <div id="roomDetails" class="hidden"></div>
+    <div id="messageBox" class="hidden"></div>
+
 
     <!-- ... (der Rest deines HTML-Codes) -->
 
@@ -47,10 +48,12 @@
             .then(response => response.json())
             .then(data => {
                 const details = document.getElementById('roomDetails');
+                details.classList.remove('hidden');
+                let beschreibungText = data.beschreibung ? data.beschreibung : "Keine Beschreibung";
                 let htmlContent = `
                     <h2>${data.name}</h2>
-                    <p>${data.beschreibung}</p>
-                    <p>Ort: ${data.ort}</p>
+                    <p>${beschreibungText}</p>
+                    <p>Adresse: ${data.adresse}</p>
                     <p>Besitzer: ${data.besitzer_id}</p>
                     <p>Anzahl Zimmer: ${data.zimmer}</p>
                     <p>Fläche: ${data.fläche}m²</p>
@@ -105,6 +108,7 @@
                 // Aktualisiere die Ansicht oder informiere den Benutzer über den Erfolg
                 messageBox.innerText = "Erfolgreich gebucht!";
                 messageBox.style.color = "green";
+                messageBox.classList.remove('hidden');
                 loadRoomDetails(roomId);
             } else {
                 // Fehlerbehandlung
