@@ -61,7 +61,7 @@ def check_login(email, password):
         error_frame("Email doesn't exit.")
     elif (userInfo["password"] == password):
         global loggedInUsername
-        loggedInUsername = userInfo["firstname"]
+        loggedInUsername = userInfo["name"]
         global loggedInUserId
         loggedInUserId = userInfo["email"]
         set_main()  # Erstellt das eingeloggte GUI
@@ -108,8 +108,8 @@ def create_room(name, desc, address, rooms, space):
 
 
 # Löscht ein Login
-def delete_login(name, owner, owner_id):
-    feedbackDelete = Mongo.deleteRoom(name, owner, owner_id)
+def delete_login(id):
+    feedbackDelete = Mongo.deleteRoom(id)
     if (not feedbackDelete):
         error_frame("error: couldn't delete login")
     else:
@@ -121,7 +121,7 @@ def delete_login(name, owner, owner_id):
 
 # Bearbeitet ein Login
 def edit_login(id, plattform, username, password):
-    feedbackEdit = database.update_login(id, plattform, username, password)
+    feedbackEdit = Mongo.updateRoomById(id, plattform, username, password)
     if (not feedbackEdit):
         error_frame("error: couldn't update login")
     else:
@@ -147,7 +147,7 @@ def grid_information():
 
 # Erstellt das "Bearbeiten von einem Login" Frame.
 def set_edit_login_frame(id):
-    login = database.select_login(id)
+    login = Mongo.getRoomById(id)
     if (not login):
         error_frame("error: id doesn't match with database entry")
     else:
@@ -155,13 +155,13 @@ def set_edit_login_frame(id):
         for child in informationFrame.winfo_children():
             child.destroy()
         plattformEditInput = customtkinter.CTkEntry(master=informationFrame, placeholder_text="Plattform Name")
-        plattformEditInput.insert(0, login[1])  # Fügt in das Eingabefeld die jetzigen Daten ein
+        plattformEditInput.insert(0, login["name"])  # Fügt in das Eingabefeld die jetzigen Daten ein
         plattformEditInput.pack(pady=10, padx=10)
         usernameEditInput = customtkinter.CTkEntry(master=informationFrame, placeholder_text="Username")
-        usernameEditInput.insert(0, login[2])  # Fügt in das Eingabefeld die jetzigen Daten ein
+        usernameEditInput.insert(0, login["beschreibung"])  # Fügt in das Eingabefeld die jetzigen Daten ein
         usernameEditInput.pack(pady=10, padx=10)
         passwordEditInput = customtkinter.CTkEntry(master=informationFrame, placeholder_text="Password")
-        passwordEditInput.insert(0, login[3])  # Fügt in das Eingabefeld die jetzigen Daten ein
+        passwordEditInput.insert(0, login["address"])  # Fügt in das Eingabefeld die jetzigen Daten ein
         passwordEditInput.pack(pady=10, padx=10)
         editButton = customtkinter.CTkButton(master=informationFrame, text="Edit",
                                              command=lambda: edit_login(id, plattformEditInput.get(),
@@ -173,38 +173,68 @@ def set_edit_login_frame(id):
     # Erstellt den Informations Frame für ein einzelnes Login
 
 
-def set_login_frame():
-    login = Mongo.getRoomByOwner(loggedInUsername, loggedInUserId)
-    if (not login):
+def set_login_frame(id):
+    room = Mongo.getRoomById(id)
+    print(room)
+    if (not room):
         error_frame("error: id doesn't match with database entry")
     else:
         informationFrame.grid_remove()
         for child in informationFrame.winfo_children():
             child.destroy()
-        plattform = customtkinter.CTkLabel(master=informationFrame, text=login[1] + " Login", font=("Roboto", 36))
-        plattform.pack(pady=(10, 30), padx=10)
-        username = customtkinter.CTkLabel(master=informationFrame, text="Username: " + login[2])
-        username.pack(pady=10, padx=10)
-        password = customtkinter.CTkLabel(master=informationFrame, text="Password: " + login[3])
-        password.pack(pady=10, padx=10)
-        passwordSecureOrNot = None
-        if (secure_password(login[3]) == None):
-            passwordSecureOrNot = "Your password is not secure."
-        else:
-            passwordSecureOrNot = "Your password is secure."
-        passwordSecure = customtkinter.CTkLabel(master=informationFrame, text=passwordSecureOrNot)
-        passwordSecure.pack(pady=10, padx=10)
-        passwordSecureInformation = customtkinter.CTkLabel(master=informationFrame,
-                                                           text="We check if the password has atleast 8 smybols, a lowercase letter, an uppercase letter, and a number.",
-                                                           font=("Roboto", 11))
-        passwordSecureInformation.pack(pady=10, padx=10)
-        editButton = customtkinter.CTkButton(master=informationFrame, text="Edit Login",
-                                             command=lambda: set_edit_login_frame(id))
-        editButton.pack(pady=10, padx=10)
-        deleteButton = customtkinter.CTkButton(master=informationFrame, text="Delete Login",
-                                               command=lambda: delete_login(id))
-        deleteButton.pack(pady=10, padx=10)
+        name = customtkinter.CTkLabel(master=informationFrame, text=room["name"], font=("Roboto", 36))
+        name.pack(pady=(10, 30), padx=10)
+        desc = customtkinter.CTkLabel(master=informationFrame, text="Description: " + room["beschreibung"])
+        desc.pack(pady=10, padx=10)
+        owner = customtkinter.CTkLabel(master=informationFrame, text="Owner: " + room["owner"])
+        owner.pack(pady=10, padx=10)
+        lol = customtkinter.CTkLabel(master=informationFrame, text="Address: " + room["address"])
+        lol.pack(pady=10, padx=10)
+        lo = customtkinter.CTkLabel(master=informationFrame, text="Room amount: " + room["room_amount"])
+        lo.pack(pady=10, padx=10)
+        l = customtkinter.CTkLabel(master=informationFrame, text="Space: " + room["space"] + " Meters Squared")
+        l.pack(pady=10, padx=10)
+        if room["owner"] == loggedInUsername:
+            editButton = customtkinter.CTkButton(master=informationFrame, text="Edit Login",
+                                                 command=lambda: set_edit_login_frame(id))
+            editButton.pack(pady=10, padx=10)
+            deleteButton = customtkinter.CTkButton(master=informationFrame, text="Delete Login",
+                                                   command=lambda: delete_login(id))
+            deleteButton.pack(pady=10, padx=10)
+
+
         grid_information()
+
+def show_all():
+    informationFrame.grid_remove()
+    for child in informationFrame.winfo_children():
+        child.destroy()
+
+    informationFrame.pack_propagate(0)
+    informationFrame.grid(pady=10, padx=(0, 10), row=0, rowspan=3, column=1, columnspan=5, sticky='w')
+
+
+    AllRoom = Mongo.getAllRoom("s")
+    print(AllRoom)
+    if (not AllRoom):
+        set_start_frame(False)
+    else:
+        set_start_frame(True)
+        for i in AllRoom:
+            frame = customtkinter.CTkFrame(master=informationFrame)
+            label = customtkinter.CTkLabel(master=frame, text=(i["name"] + "\n " + i["beschreibung"] + "\n " + i["address"] + "\n " + i["owner"]), font=("Roboto", 16), cursor="hand2")
+
+
+
+            label.pack(pady=1, padx=1, fill="x")
+
+
+            def make_lambda(x):
+                return lambda e: set_login_frame(x)
+
+            label.bind("<Button-1>", make_lambda(i["_id"]))  # Bindet das Klick Event auf das Frame
+            frame.pack(pady=2, padx=2, fill="x")
+
 
 
 # Erstellt das Frame für zum erstellen von einem Login
@@ -319,12 +349,16 @@ def set_main():
     mainFrame.rowconfigure(1, weight=1)  # " "
     mainFrame.pack(pady=5, padx=5, fill="both", expand=True)
 
-    listFrame = customtkinter.CTkScrollableFrame(master=mainFrame, width=100, height=400)
+    listFrame = customtkinter.CTkScrollableFrame(master=mainFrame, width=100, height=380)
     listFrame.grid(pady=(10, 0), padx=10, row=0, column=0, sticky='w')
 
-    addLoginButton = customtkinter.CTkButton(master=mainFrame, width=120, height=50, text="Create login",
+    addLoginButton = customtkinter.CTkButton(master=mainFrame, width=120, height=20, text="Create login",
                                              command=lambda: set_create_login_frame())
-    addLoginButton.grid(pady=(0, 10), padx=10, row=2, column=0, sticky='w')
+    addLoginButton.grid(pady=(0, 0), padx=10, row=2, column=0, sticky='w')
+
+    addShowAllButton = customtkinter.CTkButton(master=mainFrame, width=120, height=20, text="Show Room",
+                                             command=lambda: show_all())
+    addShowAllButton.grid(pady=(0, 60), padx=10, row=2, column=0, sticky='w')
 
     grid_information()
 
@@ -334,13 +368,13 @@ def set_main():
         set_start_frame(False)
     else:
         set_start_frame(True)
-        for i in range(len(userInfo)):
+        for i in userInfo:
             frame = customtkinter.CTkFrame(master=listFrame)
-            label = customtkinter.CTkLabel(master=frame, text=(userInfo[i])[1], font=("Roboto", 16), cursor="hand2")
+            label = customtkinter.CTkLabel(master=frame, text=i["name"], font=("Roboto", 16), cursor="hand2")
             label.pack(pady=1, padx=1, fill="x")
 
             def make_lambda(x):
                 return lambda e: set_login_frame(x)
 
-            label.bind("<Button-1>", make_lambda(((userInfo[i])[0])))  # Bindet das Klick Event auf das Frame
+            label.bind("<Button-1>", make_lambda(i["_id"])) # Bindet das Klick Event auf das Frame
             frame.pack(pady=2, padx=2, fill="x")

@@ -20,24 +20,27 @@ class Mongo():
         return 1
 
     def getLogin(email):
-        for x in Mongo.customer.find({"email": email}, {"email": 1, "firstname": 1, "password": 1}):
-            print(x)
-            return x
+        return Mongo.customer.find_one({"email": email}, {"email": 1, "name": 1, "password": 1})
+
 
     def createRoom(name, desc, address, room_amount, space, owner, owner_id):
         mydict = {"name": name, "beschreibung": desc, "address": address, "room_amount": room_amount, "space": space, "owner": owner, "owner_id": owner_id}
-        Mongo.room.insert_one(mydict)
-        return 1
+        result = Mongo.room.insert_one(mydict)
+        return result.inserted_id
 
     def getRoom(filtername):
-        for x in Mongo.room.find({"name": filtername}, {"_id": 1, "name": 1, "beschreibung": 1, "owner": 1}):
-            print(x)
-            return x
+        return Mongo.room.find({"name": filtername}, {"_id": 1, "name": 1, "beschreibung": 1, "owner": 1})
+
+    def getAllRoom(selfid):
+        return Mongo.room.find({}, {"_id": 1, "name": 1, "beschreibung": 1, "address": 1, "owner": 1})
 
     def getRoomByOwner(owner, owner_id):
-        for x in Mongo.room.find({"owner": owner, "owner_id": owner_id}, {"_id": 1, "name": 1, "beschreibung": 1}):
-            print(x)
-            return x
+        return Mongo.room.find({"owner": owner, "owner_id": owner_id}, {"_id": 1, "name": 1, "beschreibung": 1, "address": 1})
+
+    def getRoomById(id):
+        return Mongo.room.find_one({"_id": id}, {})
+
+
 
 
 
@@ -65,11 +68,16 @@ class Mongo():
             print(x)
             return x
 
-    def deleteRoom(name, owner, owner_id):
-        objToDelete = {"name": name, "owner": owner, "owner_id": owner_id}
+    def deleteRoom(id):
+        objToDelete = {"_id": id}
         Mongo.room.delete_one(objToDelete)
-        if(not Mongo.customer.find(objToDelete)):
-            return 1
+        return True
+
+    def updateRoomById(id, newName, newDesc, newAdd):
+        myquery = {"_id": id}
+        newvalues = {"$set": {"name": newName, "beschreibung": newDesc,"address": newAdd}}
+        Mongo.room.update_one(myquery, newvalues)
+        return id
 
 
 
