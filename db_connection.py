@@ -22,16 +22,15 @@ class Mongo():
     def getLogin(email):
         return Mongo.customer.find_one({"email": email}, {"email": 1, "name": 1, "password": 1})
 
-
     def createRoom(name, desc, address, room_amount, space, owner, owner_id):
-        mydict = {"name": name, "beschreibung": desc, "address": address, "room_amount": room_amount, "space": space, "owner": owner, "owner_id": owner_id}
+        mydict = {"name": name, "beschreibung": desc, "address": address, "room_amount": room_amount, "space": space, "owner": owner, "owner_id": owner_id, "is_booked": False, "booker_id": "none"}
         result = Mongo.room.insert_one(mydict)
         return result.inserted_id
 
     def getRoom(filtername):
         return Mongo.room.find({"name": filtername}, {"_id": 1, "name": 1, "beschreibung": 1, "owner": 1})
 
-    def getAllRoom(selfid):
+    def getAllRoom(self):
         return Mongo.room.find({}, {"_id": 1, "name": 1, "beschreibung": 1, "address": 1, "owner": 1})
 
     def getRoomByOwner(owner, owner_id):
@@ -39,11 +38,6 @@ class Mongo():
 
     def getRoomById(id):
         return Mongo.room.find_one({"_id": id}, {})
-
-
-
-
-
     def getAllRooms(self):
         for x in Mongo.room.find({}, {}):
             print(x)
@@ -78,6 +72,19 @@ class Mongo():
         newvalues = {"$set": {"name": newName, "beschreibung": newDesc,"address": newAdd}}
         Mongo.room.update_one(myquery, newvalues)
         return id
+
+    def book_room(id, booker_id):
+        myquery = {"_id": id}
+        newvalues = {"$set": {"is_booked": True, "booker_id": booker_id}}
+        Mongo.room.update_one(myquery, newvalues)
+        return id
+
+    def unbook_room(id):
+        myquery = {"_id": id}
+        newvalues = {"$set": {"is_booked": False, "booker_id": "None"}}
+        Mongo.room.update_one(myquery, newvalues)
+        return id
+
 
 
 

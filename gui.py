@@ -96,6 +96,7 @@ def create_user(firstname, name, email, address, password, repassword, telnr):
         error_frame("Please fill out Email, Firstname and Name.")
 
 
+
 # Erstellt ein neues Login für einen bestimmten User. IN DER APP ALS S
 # Erstellt eine neue Location
 def create_room(name, desc, address, rooms, space):
@@ -123,7 +124,7 @@ def delete_login(id):
 def edit_login(id, plattform, username, password):
     feedbackEdit = Mongo.updateRoomById(id, plattform, username, password)
     if (not feedbackEdit):
-        error_frame("error: couldn't update login")
+        error_frame("error: couldn't update Room")
     else:
         set_main()  # Refreshed die Seite falls es eine Änderung am Titel gäbe
         set_login_frame(id)  # Zeigt den neuen bearbeiteten Eintrag direkt an
@@ -131,12 +132,38 @@ def edit_login(id, plattform, username, password):
 
 # Switched zwischen dem Regristrieren und dem Login Frame
 def switch_login_register(switch):
-    if switch == True:
+    if switch:
         loginFrame.pack_forget()
         set_register()
     else:
         registerFrame.pack_forget()
         set_login()
+
+
+def book_room(id):
+    room = Mongo.getRoomById(id)
+    if room["owner_id"] != loggedInUserId:
+        if room["is_booked"] == False:
+            Mongo.book_room(id, loggedInUserId)
+            P = Mongo.getRoomById(id)
+            print(P["is_booked"])
+            set_login_frame(id)
+        else:
+            error_frame("error: Room is already Booked")
+
+
+def unbook_room(id):
+    room = Mongo.getRoomById(id)
+    if room["booker_id"] == loggedInUserId:
+        if room["is_booked"] == True:
+            Mongo.unbook_room(id)
+            P = Mongo.getRoomById(id)
+            print(P["is_booked"])
+            set_login_frame(id)
+        else:
+            error_frame("error: Room is not booked")
+    else:
+        error_frame("error: Room is not booked by User")
 
 
 # Zeigt das den Informations Frame an. Ähnlich wie wenn man den Frame nun sichtbar macht
@@ -194,16 +221,31 @@ def set_login_frame(id):
         lo.pack(pady=10, padx=10)
         l = customtkinter.CTkLabel(master=informationFrame, text="Space: " + room["space"] + " Meters Squared")
         l.pack(pady=10, padx=10)
+        curT = customtkinter.CTkLabel(master=informationFrame, text="Current Tennants: " + room["booker_id"])
+        curT.pack(pady=10, padx=10)
         if room["owner"] == loggedInUsername:
-            editButton = customtkinter.CTkButton(master=informationFrame, text="Edit Login",
+            editButton = customtkinter.CTkButton(master=informationFrame, text="Edit Room",
                                                  command=lambda: set_edit_login_frame(id))
             editButton.pack(pady=10, padx=10)
-            deleteButton = customtkinter.CTkButton(master=informationFrame, text="Delete Login",
+            deleteButton = customtkinter.CTkButton(master=informationFrame, text="Delete Room",
                                                    command=lambda: delete_login(id))
             deleteButton.pack(pady=10, padx=10)
+        elif room["is_booked"] == False:
+            editButton = customtkinter.CTkButton(master=informationFrame, text="Book Room",
+                                                 command=lambda: book_room(id))
+            editButton.pack(pady=10, padx=10)
+        elif room["is_booked"] == True and room["booker_id"] == loggedInUserId:
+            editButton = customtkinter.CTkButton(master=informationFrame, text="unBook Room",
+                                                 command=lambda: unbook_room(id))
+            editButton.pack(pady=10, padx=10)
 
+        else:
+            editButton = customtkinter.CTkButton(master=informationFrame, text="Book Room", state="disabled",
+                                                 command=lambda: book_room(id))
+            editButton.pack(pady=10, padx=10)
 
         grid_information()
+
 
 def show_all():
     informationFrame.grid_remove()
@@ -212,7 +254,6 @@ def show_all():
 
     informationFrame.pack_propagate(0)
     informationFrame.grid(pady=10, padx=(0, 10), row=0, rowspan=3, column=1, columnspan=5, sticky='w')
-
 
     AllRoom = Mongo.getAllRoom("s")
     print(AllRoom)
@@ -223,18 +264,13 @@ def show_all():
         for i in AllRoom:
             frame = customtkinter.CTkFrame(master=informationFrame)
             label = customtkinter.CTkLabel(master=frame, text=(i["name"] + "\n " + i["beschreibung"] + "\n " + i["address"] + "\n " + i["owner"]), font=("Roboto", 16), cursor="hand2")
-
-
-
             label.pack(pady=1, padx=1, fill="x")
-
 
             def make_lambda(x):
                 return lambda e: set_login_frame(x)
 
             label.bind("<Button-1>", make_lambda(i["_id"]))  # Bindet das Klick Event auf das Frame
             frame.pack(pady=2, padx=2, fill="x")
-
 
 
 # Erstellt das Frame für zum erstellen von einem Login
@@ -252,10 +288,11 @@ def set_create_login_frame():
     rooms.pack(pady=10, padx=10)
     space = customtkinter.CTkEntry(master=informationFrame, placeholder_text="space")
     space.pack(pady=10, padx=10)
-    createButton = customtkinter.CTkButton(master=informationFrame, text="List",command=lambda: create_room(name.get(), desc.get(), address.get(), rooms.get(), space.get()))
+    createButton = customtkinter.CTkButton(master=informationFrame, text="List",
+                                           command=lambda: create_room(name.get(), desc.get(), address.get(),
+                                                                       rooms.get(), space.get()))
     createButton.pack(pady=10, padx=10)
     grid_information()
-
 
 
 # Fügt je nach dem ob man schon Einträge erstellt hat ein anderes Anfangs Frame ein.
@@ -263,7 +300,7 @@ def set_start_frame(alreadyEntries):
     if (alreadyEntries):
         description = "Rent-A-Room 0.1 \n by Nicky Lopez"
     else:
-        description = 'You currently have no logins. \nStart creating your own logins by pressing on the "Create Login" button.'
+        description = 'You currently have no Rooms. \nStart creating your own Rooms by pressing on the "Create Room" button or Search for a Room.'
     informationFrame.grid_remove()
     startTitle = customtkinter.CTkLabel(master=informationFrame,
                                         text="Welcome to Rent-A-Room\n" + loggedInUsername,
@@ -352,12 +389,12 @@ def set_main():
     listFrame = customtkinter.CTkScrollableFrame(master=mainFrame, width=100, height=380)
     listFrame.grid(pady=(10, 0), padx=10, row=0, column=0, sticky='w')
 
-    addLoginButton = customtkinter.CTkButton(master=mainFrame, width=120, height=20, text="Create login",
+    addLoginButton = customtkinter.CTkButton(master=mainFrame, width=120, height=20, text="Create Room",
                                              command=lambda: set_create_login_frame())
     addLoginButton.grid(pady=(0, 0), padx=10, row=2, column=0, sticky='w')
 
     addShowAllButton = customtkinter.CTkButton(master=mainFrame, width=120, height=20, text="Show Room",
-                                             command=lambda: show_all())
+                                               command=lambda: show_all())
     addShowAllButton.grid(pady=(0, 60), padx=10, row=2, column=0, sticky='w')
 
     grid_information()
@@ -376,5 +413,5 @@ def set_main():
             def make_lambda(x):
                 return lambda e: set_login_frame(x)
 
-            label.bind("<Button-1>", make_lambda(i["_id"])) # Bindet das Klick Event auf das Frame
+            label.bind("<Button-1>", make_lambda(i["_id"]))  # Bindet das Klick Event auf das Frame
             frame.pack(pady=2, padx=2, fill="x")
